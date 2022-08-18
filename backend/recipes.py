@@ -1,6 +1,6 @@
 from flask_restx import Namespace,Resource,fields
 from models import Recipe
-from flask import request
+from flask import request,make_response,jsonify
 from flask_jwt_extended import jwt_required
 recipe_ns = Namespace('recipe',description='namespace for recipe')
 
@@ -28,6 +28,7 @@ class RecipiesResouce(Resource):
         """Get all recipes from database"""
         recipies = Recipe.query.all()
         return recipies
+        # return make_response(recipies,200)
 
     @recipe_ns.marshal_with(recipe_model)    
     @jwt_required()
@@ -50,6 +51,8 @@ class recipeResource(Resource):
         """Get a recipe from database by id"""
         recipe = Recipe.query.get_or_404(id)
         return recipe
+    
+    @recipe_ns.marshal_with(recipe_model)
     @jwt_required()
     def put(self,id):
         """Update Recipe"""
@@ -59,6 +62,9 @@ class recipeResource(Resource):
         # recipe.description = data['description']
         # recipe.save()
         recipe.update(data['title'],data['description'])
+        # return jsonify(recipe)
+        return recipe
+
     @jwt_required()
     def delete(self,id):
         """Delete Recipe"""
