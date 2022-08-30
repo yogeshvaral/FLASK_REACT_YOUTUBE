@@ -1,0 +1,9 @@
+/c/Yogesh/Hadoop/Python/Flask_React_youtube
+npx create-react-app client
+
+
+/c/Yogesh/Hadoop/Python/Flask_React_youtube/client
+npm start
+
+npm install react-router-dom
+
