@@ -8,7 +8,19 @@ const SignUpPage = () => {
     const {register,watch,reset,handleSubmit,formState:{errors}} = useForm();
 
     const submitForm = (data) => {
-        console.log(data);
+        // console.log(data);
+        console.log(data.username);
+        console.log(data.email);
+        console.log(data.password);
+        console.log(data.confirmPassword);
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'content-type': 'application/json', 
+            },
+            body: JSON.stringify(data)
+        }
+        fetch('/auth/signup', requestOptions)
         reset()
     }
     console.log(watch('username'));
@@ -24,36 +36,32 @@ const SignUpPage = () => {
                         <Form.Label>UserName</Form.Label>
                         <Form.Control type='text' placeholder   = 'User Name'
                         {...register("username", {required: true,maxLength: 25})}/>
-                        <br></br>
-                        {errors.username && <span style={{color: 'red'}}>User Name is required</span>}
-                        {errors.username?.type=='maxLength' && <span style={{color: 'red'}}>Max Characters should be 25</span>}
+                        {errors.username && <p style={{color: 'red'}}><small>User Name is required</small></p>}
+                        {errors.username?.type==='maxLength' && <p style={{color: 'red'}}><small>Max Characters should be 25</small></p>}
                     </Form.Group>
                     <br></br>
                     <Form.Group>
                         <Form.Label>Email</Form.Label>
                         <Form.Control type='email' placeholder = 'Email Address'
                         {...register("email", {required: true,maxLength: 85})}/>
-                        <br></br>
-                        {errors.email && <p style={{color: 'red'}}>Email is required</p>}
-                        {errors.email?.type=='maxLength' && <span style={{color: 'red'}}>Max Characters should be 80</span>}
+                        {errors.email && <p style={{color: 'red'}}><small>Email is required</small></p>}
+                        {errors.email?.type==='maxLength' && <p style={{color: 'red'}}><small>Max Characters should be 80</small></p>}
                     </Form.Group>
                     <br></br>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
                         <Form.Control type='password' placeholder = 'Password' 
                         {...register("password", {required: true,minLength: 8})}/>
-                        <br></br>
-                        {errors.password&& <span style={{color: 'red'}}>password is required</span>}
-                        {errors.password?.type=='maxLength' && <span style={{color: 'red'}}>Min Characters should be 8</span>}
+                        {errors.password&& <p style={{color: 'red'}}><small>password is required</small></p>}
+                        {errors.password?.type==='maxLength' && <p style={{color: 'red'}}><small>Min Characters should be 8</small></p>}
                     </Form.Group>
                     <br></br>
                     <Form.Group>
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control type='password' placeholder = 'Password' 
                         {...register("confirmPassword", {required: true,minLength: 8})}/>
-                        <br></br>
-                        {errors.confirmPassword && <span style={{color: 'red'}}>confirmPassword is required</span>}
-                        {errors.confirmPassword?.type=='maxLength' && <span style={{color: 'red'}}>Min Characters should be 8</span>}
+                        {errors.confirmPassword && <p style={{color: 'red'}}><small>confirmPassword is required</small></p>}
+                        {errors.confirmPassword?.type==='maxLength' && <p style={{color: 'red'}}><small>Min Characters should be 8</small></p>}
                     </Form.Group>
                     <br></br>
                     <Form.Group>
