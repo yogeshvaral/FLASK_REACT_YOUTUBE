@@ -1,18 +1,20 @@
 import React,{useState} from 'react';
-import {Form,Button} from 'react-bootstrap'
+import {Form,Button,Alert} from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
 const SignUpPage = () => {
 
     const {register,watch,reset,handleSubmit,formState:{errors}} = useForm();
-
+    const [show,setShow]=useState(false);
+    const [serverResponse,setserverResponse] = useState('')
     const submitForm = (data) => {
         // console.log(data);
-        console.log(data.username);
-        console.log(data.email);
-        console.log(data.password);
-        console.log(data.confirmPassword);
+        // console.log(data.username);
+        // console.log(data.email);
+        // console.log(data.password);
+        // console.log(data.confirmPassword);
+        if(data.password === data.confirmPassword) {
         const requestOptions = {
             method: 'POST',
             headers: { 
@@ -21,7 +23,21 @@ const SignUpPage = () => {
             body: JSON.stringify(data)
         }
         fetch('/auth/signup', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data) 
+            setserverResponse(data.message) 
+
+            console.log(serverResponse)
+            setShow(true)
+        })
+        .catch(err => console.log(err))
+
         reset()
+    }
+        else{
+            alert('Password do not match! Please try again');
+        }
     }
     console.log(watch('username'));
     console.log(watch('email'));
@@ -30,7 +46,19 @@ const SignUpPage = () => {
     return(
         <div className=' container signup'>
             <div className='form'>
+                {show?
+                <>
                 <h1>Sign Up Page</h1>
+                <Alert variant="success" onClose={() => setShow(false)} dismissible>
+                    <p>
+                        {serverResponse}
+                    </p>
+                </Alert>
+                </>
+                 :
+                 <h1>Sign Up Page</h1>  
+                }
+                
                 <Form>
                     <Form.Group>
                         <Form.Label>UserName</Form.Label>
